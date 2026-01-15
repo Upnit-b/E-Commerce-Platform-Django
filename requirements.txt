@@ -1,0 +1,5 @@
+DJANGO>=5.2,<5.3
+pillow
+requests
+python-dotenv
+django-admin-thumbnails
