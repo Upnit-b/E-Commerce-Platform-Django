@@ -268,7 +268,7 @@ def place_order(request):
                 order_number=order_number
             )
 
-            return render(request, "orders/payments.html", {
+            return render(request, "orders/place_order.html", {
                 "order": order,
                 "cart_items": cart_items,
                 "total": total,
