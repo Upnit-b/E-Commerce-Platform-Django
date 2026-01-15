@@ -46,7 +46,7 @@ def get_paypal_token():
 
 @csrf_exempt
 def create_order(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         data = json.loads(request.body)
         order_id = data["cart"][0]["id"]
 
@@ -106,7 +106,7 @@ def create_order(request):
             "status": response_data["status"]
         })
     else:
-        return redirect("home")
+        return redirect("cart")
 
 
 def payments(request):
