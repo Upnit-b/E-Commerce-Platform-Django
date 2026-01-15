@@ -1,13 +1,10 @@
 {% extends "base.html" %}
-
 {% load static %}
 
 {% block content %}
 <section class="section-content padding-y bg">
   <div class="container">
-
     <!-- ============================ COMPONENT 1 ================================= -->
-
     <div class="row">
       <h4 class=" text-center mb-10 col-lg-8">Review Your Order and Make Payment</h4>
       <aside class="col-lg-8">
@@ -87,52 +84,44 @@
                   <th scope="col">Product</th>
                   <th scope="col" width="120">Quantity</th>
                   <th scope="col" width="120">Price</th>
-
                 </tr>
               </thead>
+
               <tbody>
-
                 {% for cart_item in cart_items %}
-                <tr>
-                  <td>
-                    <figure class="itemside align-items-center">
-                      <div class="aside"><img src="{{ cart_item.product.images.url }}" class="img-sm"></div>
-                      <figcaption class="info">
-                        <a href="{{ cart_item.product.get_url }}" class="title text-dark">
-                          {{ cart_item.product.product_name }}</a>
-                        <p class="text-muted small">
-                          {% if cart_item.variations.all %}
-                          {% for item in cart_item.variations.all %}
+                  <tr>
+                    <td>
+                      <figure class="itemside align-items-center">
+                        <div class="aside"><img src="{{ cart_item.product.images.url }}" class="img-sm"></div>
+                        <figcaption class="info">
+                          <a href="{{ cart_item.product.get_url }}" class="title text-dark">
+                            {{ cart_item.product.product_name }}</a>
+                          <p class="text-muted small">
+                            {% if cart_item.variations.all %}
+                              {% for item in cart_item.variations.all %}
+                                {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                              {% endfor %}
+                            {% endif %}
+                          </p>
+                        </figcaption>
+                      </figure>
+                    </td>
 
-                          {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                    <td>
+                      <label for="">{{ cart_item.quantity }}</label>
+                    </td>
 
+                    <td>
+                      <div class="price-wrap">
+                        <var class="price">${{ cart_item.sub_total }}</var>
+                        <small class="text-muted"> ${{ cart_item.product.price }} each </small>
+                      </div> <!-- price-wrap .// -->
+                    </td>
 
-                          {% endfor %}
-                          {% endif %}
-                        </p>
-                      </figcaption>
-                    </figure>
-                  </td>
-
-                  <td>
-
-                    <label for="">{{ cart_item.quantity }}</label>
-
-                  </td>
-
-                  <td>
-                    <div class="price-wrap">
-                      <var class="price">${{ cart_item.sub_total }}</var>
-                      <small class="text-muted"> ${{ cart_item.product.price }} each </small>
-                    </div> <!-- price-wrap .// -->
-                  </td>
-
-                </tr>
+                  </tr>
                 {% endfor %}
-
               </tbody>
             </table>
-
           </div>
         </div>
       </aside> <!-- col.// -->

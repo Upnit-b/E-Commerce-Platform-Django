@@ -264,6 +264,7 @@ def place_order(request):
             data.order_number = order_number
             data.save()
 
+            # get the current order to render it on place_order.html
             order = Order.objects.get(
                 user=current_user,
                 is_ordered=False,
@@ -276,7 +277,6 @@ def place_order(request):
                 "total": total,
                 "tax": tax,
                 "grand_total": grand_total,
-                "quantity": quantity,
             })
 
     return redirect("store")
