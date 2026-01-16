@@ -5,7 +5,7 @@ from .models import Product, Variation, ReviewRating, ProductGallery
 
 # Register your models here.
 
-
+# to display the product gallery image in the product admin page, we are using admin_thumbnails
 @admin_thumbnails.thumbnail('image')
 class ProductGalleryInline(admin.TabularInline):
     model = ProductGallery
