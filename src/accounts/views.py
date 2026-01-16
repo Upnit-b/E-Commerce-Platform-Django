@@ -251,7 +251,6 @@ def dashboard(request):
     userprofile = UserProfile.objects.get(user=request.user)
 
     return render(request, "accounts/dashboard.html", {
-        "orders": orders,
         "orders_count": orders_count,
         "userprofile": userprofile,
     })

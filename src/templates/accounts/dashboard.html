@@ -13,7 +13,6 @@
       {% include "includes/dashboard_sidebar.html" %}
       <main class="col-md-9">
         <article class="card">
-
           <header class="card-header">
             <strong class="d-inline-block mr-3">Logged in as: </strong>
             <span>{{ user.full_name}}</span>
@@ -25,8 +24,8 @@
               <div class="col md-6">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Total Orders</h5>
-                    <h4>{{ orders_count }}</h4>
+                    <h5 class="card-title mb-3">Total Orders</h5>
+                    <h4 class="mb-4">{{ orders_count }}</h4>
                     <a href="{% url 'my_orders' %}">View Orders</a>
                   </div>
                 </div>
@@ -35,10 +34,10 @@
               <div class="col md-6">
                 <div class="card">
                   <div class="card-body">
-                    <img src="{{ userprofile.profile_picture.url }}" alt="User Profile Picture" width="50" height="50"
+                    <img class="mb-2" src="{{ userprofile.profile_picture.url }}" alt="User Profile Picture" width=60" height="60"
                       style="border-radius:50%">
 
-                    <p class="mb-0">{{ user.email }}</p>
+                    <p class="mb-1">{{ user.email }}</p>
                     <p>{{ user.phone_number }}</p>
                   </div>
                 </div>

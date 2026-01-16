@@ -24,7 +24,7 @@
               <div class="col md-12">
                 <div class="card">
                   <!--Order Table-->
-
+                  {% if orders %}
                   <table class="table table-hover">
                     <thead>
                       <tr>
@@ -52,22 +52,17 @@
 
                     </tbody>
                   </table>
-
-
+                  {% else %}
+                  <h4 class="p-4 text-center">No orders yet</h4>
+                  {% endif %}
                 </div>
               </div>
-
             </div> <!-- row.// -->
           </div> <!-- card-body .// -->
-
         </article> <!-- order-group.// -->
       </main>
     </div> <!-- row.// -->
   </div>
-
-
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
-
-
 {% endblock %}
