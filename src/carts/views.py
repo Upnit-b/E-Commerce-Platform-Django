@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from store.models import Product, Variation
 from .models import Cart, CartItem
+from accounts.models import UserProfile
 
 # Create your views here.
 
@@ -342,10 +343,16 @@ def checkout(request):
             request, "You must have items in cart to access this route.")
         return redirect("cart")
 
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        user_profile = None
+
     return render(request, "store/checkout.html", {
         "total": total,
         "quantity": quantity,
         "cart_items": cart_items,
         "tax": tax,
         "grand_total": grand_total,
+        "user_profile": user_profile,
     })
