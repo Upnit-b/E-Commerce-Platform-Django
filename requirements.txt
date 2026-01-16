@@ -6,15 +6,21 @@ CacheControl==0.12.14
 certifi==2025.4.26
 cffi==1.17.1
 charset-normalizer==3.4.2
+cloudinary==1.44.1
 cryptography==44.0.3
+dj-database-url==3.1.0
 Django==5.2
 django-admin-thumbnails==0.2.9
+django-cloudinary-storage==0.3.0
+gunicorn==23.0.0
 idna==3.10
 jsonpickle==3.3.0
 jsonpointer==2.4
 msgpack==1.1.0
+packaging==25.0
 paypal-server-sdk==1.0.0
 pillow==11.2.1
+psycopg==3.3.2
 pycparser==2.22
 pyOpenSSL==25.0.0
 python-dateutil==2.9.0.post0
@@ -24,3 +30,4 @@ setuptools==80.3.0
 six==1.17.0
 sqlparse==0.5.3
 urllib3==2.4.0
+whitenoise==6.11.0
