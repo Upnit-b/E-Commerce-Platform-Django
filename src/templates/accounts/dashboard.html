@@ -13,7 +13,7 @@
       <main class="col-md-9">
         <article class="card">
           <header class="card-header">
-            <strong class="d-inline-block mr-3">Logged in as: </strong>
+            <strong class="d-inline-block me-3">Logged in as: </strong>
             <span>{{ user.full_name}}</span>
           </header>
 
@@ -40,7 +40,7 @@
                     <img class="mb-2" src="{% static 'images/avatars/dummy-avatar.jpg' %}" alt="User Profile Picture"
                       width="60" height="60" style="border-radius:50%">
                     {% endif %}
-                    
+
                     <p class="mb-1">{{ user.email }}</p>
                     <p>{{ user.phone_number }}</p>
                   </div>

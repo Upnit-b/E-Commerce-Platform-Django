@@ -3,12 +3,12 @@
 <header class="section-header">
   <nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
     <div class="container">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop4"
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTop4"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTop4">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item dropdown">
             <a href="#" class="nav-link"> English </a>
           </li>
@@ -32,9 +32,9 @@
             <img class="logo" src="{% static 'images/logo.png'%}">
           </a> <!-- brand-wrap.// -->
         </div>
-        <div class="col-lg col-sm col-md col-6 flex-grow-0">
-          <div class="category-wrap dropdown d-inline-block float-right">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <div class="col-lg-auto col-sm col-md col-6 flex-grow-0">
+          <div class="category-wrap dropdown d-inline-block float-end">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa fa-bars"></i> All category
             </button>
             <div class="dropdown-menu">
@@ -46,16 +46,16 @@
             </div>
           </div> <!-- category-wrap.// -->
         </div> <!-- col.// -->
-        <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
-        <div class="col-lg  col-md-6 col-sm-12 col">
+        <div class="col-lg-auto col-md-auto col-sm-12">
+          <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
+        </div>
+        <div class="col-lg col-md-6 col-sm-12">
           <form action="{% url 'search' %}" class="search" method="GET">
             <div class="input-group w-100">
               <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
+              <button class="btn btn-primary" type="submit">
+                <i class="fa fa-search"></i>
+              </button>
             </div>
           </form> <!-- search-wrap .end// -->
         </div> <!-- col.// -->
@@ -80,9 +80,9 @@
             </div>
             {% endif %}
 
-            <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
+            <a href="{% url 'cart' %}" class="widget-header ps-3 ms-3">
               <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
-              <span class="badge badge-pill badge-danger notify">{{ cart_count }}</span>
+              <span class="badge rounded-pill bg-danger notify">{{ cart_count }}</span>
             </a>
           </div> <!-- widgets-wrap.// -->
         </div> <!-- col.// -->

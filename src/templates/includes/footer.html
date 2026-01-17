@@ -12,7 +12,7 @@
         <span class="px-2">+1 (415) 223 4647</span>
         <span class="px-2">Street name 123, Avenue Block</span>
       </div>
-      <div class="col-md-2 text-md-right text-muted">
+      <div class="col-md-2 text-md-end text-muted">
         <i class="fab fa-lg fa-cc-visa"></i>
         <i class="fab fa-lg fa-cc-paypal"></i>
         <i class="fab fa-lg fa-cc-mastercard"></i>
@@ -23,13 +23,23 @@
 <!-- ========================= FOOTER END // ========================= -->
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $('.thumb a').click(function(e) {
-      e.preventDefault();
-      $('.mainImage img').attr('src',$(this).attr("href"));
-    });
+  // Vanilla JavaScript for product image gallery
+  document.addEventListener('DOMContentLoaded', function() {
+    const thumbLinks = document.querySelectorAll('.thumb a')
+    const mainImage = document.querySelector('.mainImage img')
+
+    if (thumbLinks.length > 0 && mainImage) {
+      thumbLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault()
+          const newSrc = this.getAttribute('href')
+          if (newSrc) {
+            mainImage.setAttribute('src', newSrc)
+          }
+        })
+      })
+    }
   })
 </script>
 

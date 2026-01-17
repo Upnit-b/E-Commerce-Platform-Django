@@ -9,7 +9,7 @@
 
     <!-- ============================ COMPONENT 1 ================================= -->
     <div class="card">
-      <div class="row no-gutters">
+      <div class="row g-0">
         <aside class="col-md-6">
           <article class="gallery-wrap">
             <div class="img-big-wrap mainImage">
@@ -17,7 +17,7 @@
             </div> <!-- img-big-wrap.// -->
 
           </article> <!-- gallery-wrap .end// -->
-          
+
           <ul class="thumb">
             <li>
               <a href="{{ single_product.images.url }}" target="mainImage"><img src="{{ single_product.images.url }}"
@@ -30,7 +30,7 @@
           </ul>
         </aside>
 
-        <main class="col-md-6 border-left">
+        <main class="col-md-6 border-start">
           <form action="{% url 'add_cart' single_product.id %}" method="POST">
             {% csrf_token %}
             <article class="content-body">
@@ -182,7 +182,7 @@
           <div class="icontext w-100">
 
             <div class="text">
-              <span class="date text-muted float-md-right">{{review.updated_at}} </span>
+              <span class="date text-muted float-md-end">{{review.updated_at}} </span>
               <h6 class="mb-1">{{review.user.full_name}} </h6>
               <div class="rating-star">
                 <span>
