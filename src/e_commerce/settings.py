@@ -18,7 +18,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(
     ",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".onrender.com", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".onrender.com").split(",")
 
 
 # Application definition
