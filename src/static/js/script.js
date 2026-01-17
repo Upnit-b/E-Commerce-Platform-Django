@@ -1,55 +1,53 @@
-// some scripts
+// Vanilla JavaScript - No jQuery dependency
 
-// jquery ready start
-$(document).ready(function () {
-  // jQuery code
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function () {
 
-  /* ///////////////////////////////////////
-
-    THESE FOLLOWING SCRIPTS ONLY FOR BASIC USAGE,
-    For sliders, interactions and other
-
-    */ ///////////////////////////////////////
-
-  //////////////////////// Prevent closing from click inside dropdown
-  $(document).on('click', '.dropdown-menu', function (e) {
-    e.stopPropagation()
-  })
-
-  $('.js-check :radio').change(function () {
-    var check_attr_name = $(this).attr('name')
-    if ($(this).is(':checked')) {
-      $('input[name=' + check_attr_name + ']')
-        .closest('.js-check')
-        .removeClass('active')
-      $(this).closest('.js-check').addClass('active')
-      // item.find('.radio').find('span').text('Add');
-    } else {
-      item.removeClass('active')
-      // item.find('.radio').find('span').text('Unselect');
+  // Prevent closing from click inside dropdown
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('.dropdown-menu')) {
+      e.stopPropagation()
     }
   })
 
-  $('.js-check :checkbox').change(function () {
-    var check_attr_name = $(this).attr('name')
-    if ($(this).is(':checked')) {
-      $(this).closest('.js-check').addClass('active')
-      // item.find('.radio').find('span').text('Add');
-    } else {
-      $(this).closest('.js-check').removeClass('active')
-      // item.find('.radio').find('span').text('Unselect');
-    }
+  // Handle radio button changes
+  document.querySelectorAll('.js-check :radio').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      const checkAttrName = this.getAttribute('name')
+      if (this.checked) {
+        // Remove active class from all radios with same name
+        document.querySelectorAll('input[name="' + checkAttrName + '"]').forEach(function (input) {
+          input.closest('.js-check')?.classList.remove('active')
+        })
+        // Add active class to checked radio
+        this.closest('.js-check')?.classList.add('active')
+      }
+    })
   })
 
-  //////////////////////// Bootstrap tooltip
-  if ($('[data-toggle="tooltip"]').length > 0) {
-    // check if element exists
-    $('[data-toggle="tooltip"]').tooltip()
-  } // end if
+  // Handle checkbox changes
+  document.querySelectorAll('.js-check :checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      if (this.checked) {
+        this.closest('.js-check')?.classList.add('active')
+      } else {
+        this.closest('.js-check')?.classList.remove('active')
+      }
+    })
+  })
+
+  // Initialize Bootstrap tooltips (Bootstrap 5 syntax)
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  if (tooltipTriggerList.length > 0) {
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  }
+
+  // Auto-hide alert messages after 4 seconds
+  const alertMessages = document.querySelectorAll('.alert')
+  alertMessages.forEach(function (alert) {
+    setTimeout(function () {
+      const bsAlert = new bootstrap.Alert(alert)
+      bsAlert.close()
+    }, 4000)
+  })
 })
-// jquery end
-
-//setTimeout(function () {
-//  $('#message').fadeOut('slow')
-//}),
-//  4000

@@ -1,3 +1,42 @@
+/* ==================== SECTION CLASSES ==================== */
+.section-header {
+  background-color: #fff;
+}
+
+.section-content {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.section-intro {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.section-name {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.section-pagetop {
+  padding: 45px 0;
+}
+
+.section-conten {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.intro-banner-wrap {
+  margin-bottom: 20px;
+}
+
+.intro-banner-wrap img {
+  width: 100%;
+  height: auto;
+}
+
+/* ==================== RATING STARS ==================== */
 /* Hide Radio button */
 .rate > input {
   display: none;
@@ -48,7 +87,7 @@ label:hover ~ input:checked ~ label {
   color: #ffb503 !important;
 }
 
-/* For Product Gallery */
+/* ==================== PRODUCT GALLERY ==================== */
 ul.thumb {
   margin: 0 auto;
   padding: 0;
@@ -62,4 +101,43 @@ ul.thumb li img {
   width: 80px;
   height: 80px;
   border: 1px solid grey;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+ul.thumb li img:hover {
+  opacity: 0.7;
+}
+
+.mainImage {
+  text-align: center;
+}
+
+.mainImage img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+.dark-transp {
+  color: #969696;
+  opacity: 0.7;
+}
+
+/* Fix for Bootstrap 5 compatibility */
+.border-start {
+  border-left: 1px solid #dee2e6 !important;
+}
+
+/* Ensure proper spacing for navbar */
+.navbar.p-md-0 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .navbar.p-md-0 {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
