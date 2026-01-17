@@ -137,9 +137,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# Whitenoise compression + caching
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 
 # media files config
 CLOUDINARY_STORAGE = {
