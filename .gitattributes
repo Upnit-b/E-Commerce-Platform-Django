@@ -1,0 +1,7 @@
+# Exclude Django templates and static files from language stats
+*.html linguist-detectable=false
+static/* linguist-detectable=false
+static_collected/* linguist-detectable=false
+media/* linguist-detectable=false
+# Exclude migrations (auto-generated)
+*/migrations/* linguist-detectable=false
