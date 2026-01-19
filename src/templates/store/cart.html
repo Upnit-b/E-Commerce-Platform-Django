@@ -40,9 +40,9 @@
                         {{ cart_item.product.product_name }}</a>
                       <p class="text-muted small">
                         {% if cart_item.variations.all %}
-                          {% for item in cart_item.variations.all %}
-                            {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
-                          {% endfor %}
+                        {% for item in cart_item.variations.all %}
+                        {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                        {% endfor %}
                         {% endif %}
                       </p>
                     </figcaption>
@@ -53,11 +53,10 @@
                   <!-- col.// -->
                   <div class="col">
                     <div class="input-group input-spinner">
-                      <a href="{% url 'remove_cart' cart_item.product.id cart_item.id %}"
-                        class="btn btn-light"
-                          id="button-plus">
-                          <i class="fa fa-minus"></i>
-                        </a>
+                      <a href="{% url 'remove_cart' cart_item.product.id cart_item.id %}" class="btn btn-light"
+                        id="button-plus">
+                        <i class="fa fa-minus"></i>
+                      </a>
                       <input type="text" class="form-control" value="{{ cart_item.quantity }}" readonly>
                       <form action="{% url 'add_cart' cart_item.product.id %}" method="POST" class="d-inline">
                         {% csrf_token %}
@@ -79,7 +78,20 @@
                 </td>
                 <td class="text-end">
                   <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}"
-                    onclick="return confirm('Are you sure you want to delete this item?')" class="btn btn-danger">
+                    onclick="return confirm('Are you sure you want to delete this item?')"
+                    class="btn btn-danger d-none d-md-inline-block">
+                    Remove
+                  </a>
+                </td>
+              </tr>
+
+              <!-- MOBILE: full-width remove row -->
+              <tr class="d-table-row d-md-none">
+                <td colspan="100" class="pt-0">
+                  <!-- Use the SAME remove URL/action as your existing remove -->
+                  <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="btn btn-danger w-100"
+                    onclick="return confirm('Are you sure you want to delete this item?')"
+                  >
                     Remove
                   </a>
                 </td>
