@@ -1,6 +1,13 @@
 # 🛍️ Django eCommerce
 
-A production-ready e-commerce platform built with Django, supporting full product management, shopping cart, secure checkout using the **PayPal REST API**, user accounts, email verification, and a powerful admin dashboard. This project is suitable for learning, extending into real-world deployments, or using as a base for SaaS products.
+A production-ready e-commerce platform built with Django, supporting full product management, shopping cart, secure checkout using the **PayPal REST API**, user accounts, email verification, and a powerful admin dashboard.
+
+---
+
+🚀 Live Demo:
+👉 https://vicarious-janeva-upnit-dba8c911.koyeb.app
+
+This repository represents a deployed, real-world Django application, designed with scalability, security, and maintainability in mind.
 
 ---
 
@@ -28,8 +35,10 @@ A production-ready e-commerce platform built with Django, supporting full produc
 | Payments     | PayPal Orders API    |
 | Email        | SMTP / Django Email  |
 | Auth         | Django Auth          |
-| Database     | SQLite (default)     |
+| Database     | PostgreSQL (Neon)    |
 | Static Files | Django Staticfiles   |
+| Depoyment    | Koyeb, Gunicorn,     |
+| Container    | Docker               |
 
 ---
 
@@ -38,8 +47,7 @@ A production-ready e-commerce platform built with Django, supporting full produc
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/Upnit-b/django_eCommerce.git
-   cd django_eCommerce/src
+   git clone https://github.com/Upnit-b/E-Commerce-Platform-Django.git
    ```
 
 2. **Create and activate a virtual environment**:
@@ -58,6 +66,7 @@ A production-ready e-commerce platform built with Django, supporting full produc
 4. **Apply migrations**:
 
    ```bash
+   cd src
    python manage.py migrate
    ```
 
