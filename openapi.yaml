@@ -1,0 +1,986 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce API
+  description: |
+    API documentation for the E-Commerce platform. This API provides endpoints for:
+    - User authentication and account management
+    - Product browsing and search
+    - Shopping cart operations
+    - Order placement and payment processing
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://willing-tommie-upnit-42566811.koyeb.app
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User authentication and account management
+  - name: Products
+    description: Product browsing, search, and reviews
+  - name: Cart
+    description: Shopping cart operations
+  - name: Orders
+    description: Order placement and payment processing
+
+paths:
+  # Authentication Endpoints
+  /accounts/register/:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Creates a new user account and sends a verification email
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - first_name
+                - last_name
+                - email
+                - phone_number
+                - password
+              properties:
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+                phone_number:
+                  type: string
+                  example: "+1234567890"
+                password:
+                  type: string
+                  format: password
+                  example: SecurePass123!
+      responses:
+        '302':
+          description: Redirects to login page with verification message
+        '200':
+          description: Registration form page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /accounts/login/:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticates a user and logs them in
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+                password:
+                  type: string
+                  format: password
+                  example: SecurePass123!
+      responses:
+        '302':
+          description: Redirects to store or checkout page
+        '200':
+          description: Login form page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /accounts/logout/:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      description: Logs out the current user
+      security:
+        - sessionAuth: []
+      responses:
+        '302':
+          description: Redirects to login page
+
+  /accounts/dashboard/:
+    get:
+      tags:
+        - Authentication
+      summary: Get user dashboard
+      description: Returns the user's dashboard with order count and profile information
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: Dashboard page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /accounts/activate/{uidb64}/{token}/:
+    get:
+      tags:
+        - Authentication
+      summary: Activate user account
+      description: Activates a user account using the verification token from email
+      parameters:
+        - name: uidb64
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Base64 encoded user ID
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Account activation token
+      responses:
+        '302':
+          description: Redirects to login page on success, register page on failure
+
+  /accounts/forgotPassword/:
+    post:
+      tags:
+        - Authentication
+      summary: Request password reset
+      description: Sends a password reset email to the user
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+      responses:
+        '302':
+          description: Redirects to login page
+        '200':
+          description: Forgot password form page
+
+  /accounts/resetpassword_validate/{uidb64}/{token}/:
+    get:
+      tags:
+        - Authentication
+      summary: Validate password reset token
+      description: Validates the password reset token and stores uid in session
+      parameters:
+        - name: uidb64
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirects to reset password page or login page
+
+  /accounts/resetPassword/:
+    post:
+      tags:
+        - Authentication
+      summary: Reset password
+      description: Resets the user's password after token validation
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - password
+                - confirm_password
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: NewSecurePass123!
+                confirm_password:
+                  type: string
+                  format: password
+                  example: NewSecurePass123!
+      responses:
+        '302':
+          description: Redirects to login page on success
+
+  /accounts/my_orders/:
+    get:
+      tags:
+        - Authentication
+      summary: Get user orders
+      description: Returns all orders for the authenticated user
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: List of user orders
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /accounts/edit_profile/:
+    get:
+      tags:
+        - Authentication
+      summary: Get user profile edit form
+      description: Returns the profile edit form
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: Profile edit form page
+    post:
+      tags:
+        - Authentication
+      summary: Update user profile
+      description: Updates the user's profile information
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                phone_number:
+                  type: string
+                  example: "+1234567890"
+                address_line_1:
+                  type: string
+                  example: "123 Main St"
+                address_line_2:
+                  type: string
+                  example: "Apt 4B"
+                city:
+                  type: string
+                  example: New York
+                state:
+                  type: string
+                  example: NY
+                country:
+                  type: string
+                  example: USA
+                profile_picture:
+                  type: string
+                  format: binary
+      responses:
+        '302':
+          description: Redirects to edit profile page
+        '200':
+          description: Profile edit form page
+
+  /accounts/change_password/:
+    post:
+      tags:
+        - Authentication
+      summary: Change password
+      description: Changes the user's password
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - current_password
+                - new_password
+                - confirm_password
+              properties:
+                current_password:
+                  type: string
+                  format: password
+                  example: OldPass123!
+                new_password:
+                  type: string
+                  format: password
+                  example: NewPass123!
+                confirm_password:
+                  type: string
+                  format: password
+                  example: NewPass123!
+      responses:
+        '302':
+          description: Redirects to login page on success
+
+  /accounts/order_detail/{order_id}/:
+    get:
+      tags:
+        - Authentication
+      summary: Get order details
+      description: Returns detailed information about a specific order
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Order number
+      responses:
+        '200':
+          description: Order details page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  # Product Endpoints
+  /store/:
+    get:
+      tags:
+        - Products
+      summary: List all products
+      description: Returns a paginated list of all available products
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+      responses:
+        '200':
+          description: List of products
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /store/category/{category_slug}/:
+    get:
+      tags:
+        - Products
+      summary: Get products by category
+      description: Returns products filtered by category slug
+      parameters:
+        - name: category_slug
+          in: path
+          required: true
+          schema:
+            type: string
+          example: electronics
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+      responses:
+        '200':
+          description: List of products in category
+          content:
+            text/html:
+              schema:
+                type: string
+        '404':
+          description: Category not found
+
+  /store/category/{category_slug}/{product_slug}:
+    get:
+      tags:
+        - Products
+      summary: Get product details
+      description: Returns detailed information about a specific product
+      parameters:
+        - name: category_slug
+          in: path
+          required: true
+          schema:
+            type: string
+          example: electronics
+        - name: product_slug
+          in: path
+          required: true
+          schema:
+            type: string
+          example: smartphone-pro-max
+      responses:
+        '200':
+          description: Product details page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /store/search/:
+    get:
+      tags:
+        - Products
+      summary: Search products
+      description: Searches for products by keyword
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+          example: smartphone
+      responses:
+        '200':
+          description: Search results
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /store/submit_review/{product_id}/:
+    post:
+      tags:
+        - Products
+      summary: Submit product review
+      description: Submits or updates a review for a product
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - subject
+                - rating
+                - review
+              properties:
+                subject:
+                  type: string
+                  example: Great product!
+                rating:
+                  type: number
+                  format: float
+                  minimum: 0
+                  maximum: 5
+                  example: 4.5
+                review:
+                  type: string
+                  example: This product exceeded my expectations.
+      responses:
+        '302':
+          description: Redirects back to product page
+        '200':
+          description: Error response
+
+  # Cart Endpoints
+  /cart/:
+    get:
+      tags:
+        - Cart
+      summary: Get cart
+      description: Returns the current user's shopping cart
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: Cart page with items
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /cart/add_cart/{product_id}:
+    post:
+      tags:
+        - Cart
+      summary: Add product to cart
+      description: Adds a product to the cart with optional variations (color, size)
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                color:
+                  type: string
+                  example: red
+                size:
+                  type: string
+                  example: large
+      responses:
+        '302':
+          description: Redirects to cart page
+
+  /cart/remove_cart/{product_id}/{cart_item_id}/:
+    post:
+      tags:
+        - Cart
+      summary: Decrease cart item quantity
+      description: Decreases the quantity of a cart item by 1, removes if quantity becomes 0
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - name: cart_item_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '302':
+          description: Redirects to cart page
+
+  /cart/remove_cart_item/{product_id}/{cart_item_id}/:
+    post:
+      tags:
+        - Cart
+      summary: Remove cart item
+      description: Completely removes an item from the cart
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - name: cart_item_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '302':
+          description: Redirects to cart page
+
+  /cart/checkout/:
+    get:
+      tags:
+        - Cart
+      summary: Get checkout page
+      description: Returns the checkout page with cart items and totals
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: Checkout page
+          content:
+            text/html:
+              schema:
+                type: string
+        '302':
+          description: Redirects to cart if cart is empty
+
+  # Order Endpoints
+  /orders/place_order/:
+    post:
+      tags:
+        - Orders
+      summary: Place order
+      description: Creates a new order from cart items
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - first_name
+                - last_name
+                - email
+                - phone_number
+                - address_line_1
+                - country
+                - state
+                - city
+              properties:
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+                phone_number:
+                  type: string
+                  example: "+1234567890"
+                address_line_1:
+                  type: string
+                  example: "123 Main St"
+                address_line_2:
+                  type: string
+                  example: "Apt 4B"
+                country:
+                  type: string
+                  example: USA
+                state:
+                  type: string
+                  example: NY
+                city:
+                  type: string
+                  example: New York
+                order_note:
+                  type: string
+                  example: Please leave at the door
+      responses:
+        '200':
+          description: Order placement page with PayPal integration
+          content:
+            text/html:
+              schema:
+                type: string
+        '302':
+          description: Redirects to store if cart is empty
+
+  /orders/create_order/:
+    post:
+      tags:
+        - Orders
+      summary: Create PayPal order
+      description: Creates a PayPal order for payment processing
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cart
+              properties:
+                cart:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "Ord2024-ABC12345"
+      responses:
+        '200':
+          description: PayPal order created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paypal_order_id:
+                    type: string
+                    example: "5O190127TN364715T"
+                  status:
+                    type: string
+                    example: "CREATED"
+        '302':
+          description: Redirects to cart
+
+  /orders/payments/:
+    post:
+      tags:
+        - Orders
+      summary: Process payment
+      description: Processes the PayPal payment and completes the order
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderID
+              properties:
+                orderID:
+                  type: string
+                  example: "5O190127TN364715T"
+      responses:
+        '200':
+          description: Payment processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  payment_id:
+                    type: string
+                    example: "3C679366HH908993F"
+                  status:
+                    type: string
+                    example: "COMPLETED"
+                  order_number:
+                    type: string
+                    example: "Ord2024-ABC12345"
+        '302':
+          description: Redirects to cart
+
+  /orders/order_complete/:
+    get:
+      tags:
+        - Orders
+      summary: Get order completion page
+      description: Returns the order completion confirmation page
+      parameters:
+        - name: order_number
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "Ord2024-ABC12345"
+        - name: payment_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "3C679366HH908993F"
+      responses:
+        '200':
+          description: Order completion page
+          content:
+            text/html:
+              schema:
+                type: string
+        '302':
+          description: Redirects to cart if order not found
+
+  /orders/order_cancel/:
+    get:
+      tags:
+        - Orders
+      summary: Get order cancellation page
+      description: Returns the order cancellation page
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: Order cancellation page
+          content:
+            text/html:
+              schema:
+                type: string
+        '302':
+          description: Redirects to cart if not authenticated
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+      description: Django session authentication
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        product_name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+        images:
+          type: string
+          format: uri
+        stock:
+          type: integer
+        is_available:
+          type: boolean
+        category:
+          $ref: '#/components/schemas/Category'
+        created_date:
+          type: string
+          format: date-time
+        modified_date:
+          type: string
+          format: date-time
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        category_name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        cat_image:
+          type: string
+          format: uri
+
+    Variation:
+      type: object
+      properties:
+        id:
+          type: integer
+        variation_category:
+          type: string
+          enum: [color, size]
+        variation_value:
+          type: string
+        is_active:
+          type: boolean
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        product:
+          $ref: '#/components/schemas/Product'
+        variations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variation'
+        quantity:
+          type: integer
+        is_active:
+          type: boolean
+
+    Order:
+      type: object
+      properties:
+        order_number:
+          type: string
+        user:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+          format: email
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        order_note:
+          type: string
+        order_total:
+          type: number
+          format: float
+        tax:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [New, Accepted, Completed, Cancelled]
+        is_ordered:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    Payment:
+      type: object
+      properties:
+        payment_id:
+          type: string
+        payment_method:
+          type: string
+        amount_paid:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ReviewRating:
+      type: object
+      properties:
+        id:
+          type: integer
+        product:
+          type: integer
+        user:
+          type: integer
+        subject:
+          type: string
+        review:
+          type: string
+        rating:
+          type: number
+          format: float
+        status:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
